@@ -1,0 +1,23 @@
+name: Test server packages
+
+on:
+  push:
+    paths: ['backend/**', 'nexora-link-vercel/**', '.github/workflows/test-servers.yml']
+  pull_request:
+    paths: ['backend/**', 'nexora-link-vercel/**']
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Backend (endpoint tambahan, tanpa PostgreSQL)
+        working-directory: backend
+        run: node --test
+      - name: Nexora Link (bridge Vercel)
+        working-directory: nexora-link-vercel
+        run: node --test
